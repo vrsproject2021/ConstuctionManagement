@@ -23,7 +23,7 @@ namespace ConstuctionManagement.Controllers
 
                 if (user_details == null)
                 {
-                    user.LoginErrorMessage = "Wrong Username or Password";
+                    user.LoginErrorMessage = "Wrong Usernamess or Password";
                     return View("Index", user);
                 }
                 else
