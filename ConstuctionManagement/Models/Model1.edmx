@@ -1,0 +1,641 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ConstructionModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'Construction.dbo.tbl_expensedetails' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="tbl_expensedetails">
+          <Property Name="e_id" Type="int" />
+          <Property Name="e_details" Type="varchar(max)" />
+          <Property Name="project_id" Type="int" />
+        </EntityType>-->
+        <EntityType Name="tbl_expensemaster">
+          <Key>
+            <PropertyRef Name="e_id" />
+          </Key>
+          <Property Name="e_id" Type="int" Nullable="false" />
+          <Property Name="e_name" Type="varchar(max)" />
+          <Property Name="e_date" Type="date" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="project_id" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_expensetype">
+          <Key>
+            <PropertyRef Name="e_id" />
+          </Key>
+          <Property Name="e_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="expensetype" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_itemmaster">
+          <Key>
+            <PropertyRef Name="product_id" />
+          </Key>
+          <Property Name="product_id" Type="int" Nullable="false" />
+          <Property Name="unit" Type="varchar(max)" />
+          <Property Name="item" Type="varchar(max)" />
+          <Property Name="item_code" Type="varchar(max)" />
+          <Property Name="project_id" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_materialissue">
+          <Key>
+            <PropertyRef Name="issue_id" />
+          </Key>
+          <Property Name="product_id" Type="int" />
+          <Property Name="issue_id" Type="int" Nullable="false" />
+          <Property Name="project_name" Type="varchar(max)" />
+          <Property Name="item_name" Type="varchar(max)" />
+          <Property Name="quantity" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="project_id" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_project">
+          <Key>
+            <PropertyRef Name="project_id" />
+          </Key>
+          <Property Name="project_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="project_name" Type="varchar(max)" />
+          <Property Name="e_price" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="e_time" Type="date" />
+        </EntityType>
+        <EntityType Name="tbl_purchase">
+          <Key>
+            <PropertyRef Name="purchase_id" />
+          </Key>
+          <Property Name="product_id" Type="int" />
+          <Property Name="purchase_id" Type="int" Nullable="false" />
+          <Property Name="invoice" Type="varchar(max)" />
+          <Property Name="supplier" Type="varchar(max)" />
+          <Property Name="company" Type="varchar(max)" />
+          <Property Name="quantity" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="purchase_date" Type="date" />
+          <Property Name="purchase_rate" Type="decimal" Precision="18" Scale="4" />
+          <Property Name="project_id" Type="int" />
+        </EntityType>
+        <EntityType Name="tbl_role">
+          <Key>
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="role_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="role_name" Type="varchar(max)" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Construction.dbo.tbl_stock' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tbl_stock">
+          <Key>
+            <PropertyRef Name="product_id" />
+          </Key>
+          <Property Name="product_id" Type="int" Nullable="false" />
+          <Property Name="quantity" Type="decimal" Precision="18" Scale="4" />
+        </EntityType>
+        <EntityType Name="tbl_unit">
+          <Key>
+            <PropertyRef Name="unit_id" />
+          </Key>
+          <Property Name="unit_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="unit" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="tbl_user">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar(max)" />
+          <Property Name="password" Type="varchar(max)" />
+          <Property Name="role_id" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+error 6004: The table 'Construction.dbo.tbl_expensedetails' is referenced by a relationship, but cannot be found.
+        <Association Name="FK_tbl_expensedetails_tbl_expensemaster" />-->
+        <!--Errors Found During Generation:
+error 6004: The table 'Construction.dbo.tbl_expensedetails' is referenced by a relationship, but cannot be found.
+        <Association Name="FK_tbl_expensedetails_tbl_project" />-->
+        <Association Name="FK_tbl_expensemaster_tbl_project">
+          <End Role="tbl_project" Type="Self.tbl_project" Multiplicity="0..1" />
+          <End Role="tbl_expensemaster" Type="Self.tbl_expensemaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="tbl_expensemaster">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_itemmaster_tbl_project">
+          <End Role="tbl_project" Type="Self.tbl_project" Multiplicity="0..1" />
+          <End Role="tbl_itemmaster" Type="Self.tbl_itemmaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="tbl_itemmaster">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_materialissue_tbl_itemmaster">
+          <End Role="tbl_itemmaster" Type="Self.tbl_itemmaster" Multiplicity="0..1" />
+          <End Role="tbl_materialissue" Type="Self.tbl_materialissue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_itemmaster">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="tbl_materialissue">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_materialissue_tbl_project">
+          <End Role="tbl_project" Type="Self.tbl_project" Multiplicity="0..1" />
+          <End Role="tbl_materialissue" Type="Self.tbl_materialissue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="tbl_materialissue">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_purchase_tbl_itemmaster">
+          <End Role="tbl_itemmaster" Type="Self.tbl_itemmaster" Multiplicity="0..1" />
+          <End Role="tbl_purchase" Type="Self.tbl_purchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_itemmaster">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="tbl_purchase">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_purchase_tbl_project">
+          <End Role="tbl_project" Type="Self.tbl_project" Multiplicity="1" />
+          <End Role="tbl_purchase" Type="Self.tbl_purchase" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="tbl_purchase">
+              <PropertyRef Name="purchase_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_stock_tbl_itemmaster">
+          <End Role="tbl_itemmaster" Type="Self.tbl_itemmaster" Multiplicity="1" />
+          <End Role="tbl_stock" Type="Self.tbl_stock" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_itemmaster">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="tbl_stock">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_user_tbl_role">
+          <End Role="tbl_role" Type="Self.tbl_role" Multiplicity="0..1" />
+          <End Role="tbl_user" Type="Self.tbl_user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_role">
+              <PropertyRef Name="role_id" />
+            </Principal>
+            <Dependent Role="tbl_user">
+              <PropertyRef Name="role_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ConstructionModel1StoreContainer">
+          <EntitySet Name="tbl_expensemaster" EntityType="Self.tbl_expensemaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_expensetype" EntityType="Self.tbl_expensetype" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_itemmaster" EntityType="Self.tbl_itemmaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_materialissue" EntityType="Self.tbl_materialissue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_project" EntityType="Self.tbl_project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_purchase" EntityType="Self.tbl_purchase" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_role" EntityType="Self.tbl_role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_unit" EntityType="Self.tbl_unit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_user" EntityType="Self.tbl_user" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_stock" EntityType="Self.tbl_stock" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[tbl_stock].[product_id] AS [product_id], 
+[tbl_stock].[quantity] AS [quantity]
+FROM [dbo].[tbl_stock] AS [tbl_stock]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_tbl_expensemaster_tbl_project" Association="Self.FK_tbl_expensemaster_tbl_project">
+            <End Role="tbl_project" EntitySet="tbl_project" />
+            <End Role="tbl_expensemaster" EntitySet="tbl_expensemaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_itemmaster_tbl_project" Association="Self.FK_tbl_itemmaster_tbl_project">
+            <End Role="tbl_project" EntitySet="tbl_project" />
+            <End Role="tbl_itemmaster" EntitySet="tbl_itemmaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_materialissue_tbl_itemmaster" Association="Self.FK_tbl_materialissue_tbl_itemmaster">
+            <End Role="tbl_itemmaster" EntitySet="tbl_itemmaster" />
+            <End Role="tbl_materialissue" EntitySet="tbl_materialissue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_materialissue_tbl_project" Association="Self.FK_tbl_materialissue_tbl_project">
+            <End Role="tbl_project" EntitySet="tbl_project" />
+            <End Role="tbl_materialissue" EntitySet="tbl_materialissue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_purchase_tbl_itemmaster" Association="Self.FK_tbl_purchase_tbl_itemmaster">
+            <End Role="tbl_itemmaster" EntitySet="tbl_itemmaster" />
+            <End Role="tbl_purchase" EntitySet="tbl_purchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_purchase_tbl_project" Association="Self.FK_tbl_purchase_tbl_project">
+            <End Role="tbl_project" EntitySet="tbl_project" />
+            <End Role="tbl_purchase" EntitySet="tbl_purchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_stock_tbl_itemmaster" Association="Self.FK_tbl_stock_tbl_itemmaster">
+            <End Role="tbl_itemmaster" EntitySet="tbl_itemmaster" />
+            <End Role="tbl_stock" EntitySet="tbl_stock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_user_tbl_role" Association="Self.FK_tbl_user_tbl_role">
+            <End Role="tbl_role" EntitySet="tbl_role" />
+            <End Role="tbl_user" EntitySet="tbl_user" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ConstructionModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_expensemaster">
+          <Key>
+            <PropertyRef Name="e_id" />
+          </Key>
+          <Property Name="e_id" Type="Int32" Nullable="false" />
+          <Property Name="e_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="e_date" Type="DateTime" Precision="0" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="project_id" Type="Int32" />
+          <NavigationProperty Name="tbl_project" Relationship="Self.FK_tbl_expensemaster_tbl_project" FromRole="tbl_expensemaster" ToRole="tbl_project" />
+        </EntityType>
+        <EntityType Name="tbl_expensetype">
+          <Key>
+            <PropertyRef Name="e_id" />
+          </Key>
+          <Property Name="e_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="expensetype" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_itemmaster">
+          <Key>
+            <PropertyRef Name="product_id" />
+          </Key>
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="unit" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="item" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="item_code" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="project_id" Type="Int32" />
+          <NavigationProperty Name="tbl_project" Relationship="Self.FK_tbl_itemmaster_tbl_project" FromRole="tbl_itemmaster" ToRole="tbl_project" />
+          <NavigationProperty Name="tbl_materialissue" Relationship="Self.FK_tbl_materialissue_tbl_itemmaster" FromRole="tbl_itemmaster" ToRole="tbl_materialissue" />
+          <NavigationProperty Name="tbl_purchase" Relationship="Self.FK_tbl_purchase_tbl_itemmaster" FromRole="tbl_itemmaster" ToRole="tbl_purchase" />
+          <NavigationProperty Name="tbl_stock" Relationship="Self.FK_tbl_stock_tbl_itemmaster" FromRole="tbl_itemmaster" ToRole="tbl_stock" />
+        </EntityType>
+        <EntityType Name="tbl_materialissue">
+          <Key>
+            <PropertyRef Name="issue_id" />
+          </Key>
+          <Property Name="product_id" Type="Int32" />
+          <Property Name="issue_id" Type="Int32" Nullable="false" />
+          <Property Name="project_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="item_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="quantity" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="project_id" Type="Int32" />
+          <NavigationProperty Name="tbl_itemmaster" Relationship="Self.FK_tbl_materialissue_tbl_itemmaster" FromRole="tbl_materialissue" ToRole="tbl_itemmaster" />
+          <NavigationProperty Name="tbl_project" Relationship="Self.FK_tbl_materialissue_tbl_project" FromRole="tbl_materialissue" ToRole="tbl_project" />
+        </EntityType>
+        <EntityType Name="tbl_project">
+          <Key>
+            <PropertyRef Name="project_id" />
+          </Key>
+          <Property Name="project_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="project_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="e_price" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="e_time" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="tbl_expensemaster" Relationship="Self.FK_tbl_expensemaster_tbl_project" FromRole="tbl_project" ToRole="tbl_expensemaster" />
+          <NavigationProperty Name="tbl_itemmaster" Relationship="Self.FK_tbl_itemmaster_tbl_project" FromRole="tbl_project" ToRole="tbl_itemmaster" />
+          <NavigationProperty Name="tbl_materialissue" Relationship="Self.FK_tbl_materialissue_tbl_project" FromRole="tbl_project" ToRole="tbl_materialissue" />
+          <NavigationProperty Name="tbl_purchase" Relationship="Self.FK_tbl_purchase_tbl_project" FromRole="tbl_project" ToRole="tbl_purchase" />
+        </EntityType>
+        <EntityType Name="tbl_purchase">
+          <Key>
+            <PropertyRef Name="purchase_id" />
+          </Key>
+          <Property Name="product_id" Type="Int32" />
+          <Property Name="purchase_id" Type="Int32" Nullable="false" />
+          <Property Name="invoice" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="supplier" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="company" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="quantity" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="purchase_date" Type="DateTime" Precision="0" />
+          <Property Name="purchase_rate" Type="Decimal" Precision="18" Scale="4" />
+          <Property Name="project_id" Type="Int32" />
+          <NavigationProperty Name="tbl_itemmaster" Relationship="Self.FK_tbl_purchase_tbl_itemmaster" FromRole="tbl_purchase" ToRole="tbl_itemmaster" />
+          <NavigationProperty Name="tbl_project" Relationship="Self.FK_tbl_purchase_tbl_project" FromRole="tbl_purchase" ToRole="tbl_project" />
+        </EntityType>
+        <EntityType Name="tbl_role">
+          <Key>
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="role_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="role_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbl_user" Relationship="Self.FK_tbl_user_tbl_role" FromRole="tbl_role" ToRole="tbl_user" />
+        </EntityType>
+        <EntityType Name="tbl_unit">
+          <Key>
+            <PropertyRef Name="unit_id" />
+          </Key>
+          <Property Name="unit_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="unit" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_user">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="password" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="role_id" Type="Int32" />
+          <NavigationProperty Name="tbl_role" Relationship="Self.FK_tbl_user_tbl_role" FromRole="tbl_user" ToRole="tbl_role" />
+        </EntityType>
+        <EntityType Name="tbl_stock">
+          <Key>
+            <PropertyRef Name="product_id" />
+          </Key>
+          <Property Name="product_id" Type="Int32" Nullable="false" />
+          <Property Name="quantity" Type="Decimal" Precision="18" Scale="4" />
+          <NavigationProperty Name="tbl_itemmaster" Relationship="Self.FK_tbl_stock_tbl_itemmaster" FromRole="tbl_stock" ToRole="tbl_itemmaster" />
+        </EntityType>
+        <Association Name="FK_tbl_expensemaster_tbl_project">
+          <End Role="tbl_project" Type="Self.tbl_project" Multiplicity="0..1" />
+          <End Role="tbl_expensemaster" Type="Self.tbl_expensemaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="tbl_expensemaster">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_itemmaster_tbl_project">
+          <End Role="tbl_project" Type="Self.tbl_project" Multiplicity="0..1" />
+          <End Role="tbl_itemmaster" Type="Self.tbl_itemmaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="tbl_itemmaster">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_materialissue_tbl_itemmaster">
+          <End Role="tbl_itemmaster" Type="Self.tbl_itemmaster" Multiplicity="0..1" />
+          <End Role="tbl_materialissue" Type="Self.tbl_materialissue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_itemmaster">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="tbl_materialissue">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_purchase_tbl_itemmaster">
+          <End Role="tbl_itemmaster" Type="Self.tbl_itemmaster" Multiplicity="0..1" />
+          <End Role="tbl_purchase" Type="Self.tbl_purchase" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_itemmaster">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="tbl_purchase">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_stock_tbl_itemmaster">
+          <End Role="tbl_itemmaster" Type="Self.tbl_itemmaster" Multiplicity="1" />
+          <End Role="tbl_stock" Type="Self.tbl_stock" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_itemmaster">
+              <PropertyRef Name="product_id" />
+            </Principal>
+            <Dependent Role="tbl_stock">
+              <PropertyRef Name="product_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_materialissue_tbl_project">
+          <End Role="tbl_project" Type="Self.tbl_project" Multiplicity="0..1" />
+          <End Role="tbl_materialissue" Type="Self.tbl_materialissue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="tbl_materialissue">
+              <PropertyRef Name="project_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_purchase_tbl_project">
+          <End Role="tbl_project" Type="Self.tbl_project" Multiplicity="1" />
+          <End Role="tbl_purchase" Type="Self.tbl_purchase" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_project">
+              <PropertyRef Name="project_id" />
+            </Principal>
+            <Dependent Role="tbl_purchase">
+              <PropertyRef Name="purchase_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_user_tbl_role">
+          <End Role="tbl_role" Type="Self.tbl_role" Multiplicity="0..1" />
+          <End Role="tbl_user" Type="Self.tbl_user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_role">
+              <PropertyRef Name="role_id" />
+            </Principal>
+            <Dependent Role="tbl_user">
+              <PropertyRef Name="role_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ConstructionEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_expensemaster" EntityType="Self.tbl_expensemaster" />
+          <EntitySet Name="tbl_expensetype" EntityType="Self.tbl_expensetype" />
+          <EntitySet Name="tbl_itemmaster" EntityType="Self.tbl_itemmaster" />
+          <EntitySet Name="tbl_materialissue" EntityType="Self.tbl_materialissue" />
+          <EntitySet Name="tbl_project" EntityType="Self.tbl_project" />
+          <EntitySet Name="tbl_purchase" EntityType="Self.tbl_purchase" />
+          <EntitySet Name="tbl_role" EntityType="Self.tbl_role" />
+          <EntitySet Name="tbl_unit" EntityType="Self.tbl_unit" />
+          <EntitySet Name="tbl_user" EntityType="Self.tbl_user" />
+          <EntitySet Name="tbl_stock" EntityType="Self.tbl_stock" />
+          <AssociationSet Name="FK_tbl_expensemaster_tbl_project" Association="Self.FK_tbl_expensemaster_tbl_project">
+            <End Role="tbl_project" EntitySet="tbl_project" />
+            <End Role="tbl_expensemaster" EntitySet="tbl_expensemaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_itemmaster_tbl_project" Association="Self.FK_tbl_itemmaster_tbl_project">
+            <End Role="tbl_project" EntitySet="tbl_project" />
+            <End Role="tbl_itemmaster" EntitySet="tbl_itemmaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_materialissue_tbl_itemmaster" Association="Self.FK_tbl_materialissue_tbl_itemmaster">
+            <End Role="tbl_itemmaster" EntitySet="tbl_itemmaster" />
+            <End Role="tbl_materialissue" EntitySet="tbl_materialissue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_purchase_tbl_itemmaster" Association="Self.FK_tbl_purchase_tbl_itemmaster">
+            <End Role="tbl_itemmaster" EntitySet="tbl_itemmaster" />
+            <End Role="tbl_purchase" EntitySet="tbl_purchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_stock_tbl_itemmaster" Association="Self.FK_tbl_stock_tbl_itemmaster">
+            <End Role="tbl_itemmaster" EntitySet="tbl_itemmaster" />
+            <End Role="tbl_stock" EntitySet="tbl_stock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_materialissue_tbl_project" Association="Self.FK_tbl_materialissue_tbl_project">
+            <End Role="tbl_project" EntitySet="tbl_project" />
+            <End Role="tbl_materialissue" EntitySet="tbl_materialissue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_purchase_tbl_project" Association="Self.FK_tbl_purchase_tbl_project">
+            <End Role="tbl_project" EntitySet="tbl_project" />
+            <End Role="tbl_purchase" EntitySet="tbl_purchase" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_user_tbl_role" Association="Self.FK_tbl_user_tbl_role">
+            <End Role="tbl_role" EntitySet="tbl_role" />
+            <End Role="tbl_user" EntitySet="tbl_user" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ConstructionModel1StoreContainer" CdmEntityContainer="ConstructionEntities2">
+          <EntitySetMapping Name="tbl_expensemaster">
+            <EntityTypeMapping TypeName="ConstructionModel1.tbl_expensemaster">
+              <MappingFragment StoreEntitySet="tbl_expensemaster">
+                <ScalarProperty Name="e_id" ColumnName="e_id" />
+                <ScalarProperty Name="e_name" ColumnName="e_name" />
+                <ScalarProperty Name="e_date" ColumnName="e_date" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_expensetype">
+            <EntityTypeMapping TypeName="ConstructionModel1.tbl_expensetype">
+              <MappingFragment StoreEntitySet="tbl_expensetype">
+                <ScalarProperty Name="e_id" ColumnName="e_id" />
+                <ScalarProperty Name="expensetype" ColumnName="expensetype" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_itemmaster">
+            <EntityTypeMapping TypeName="ConstructionModel1.tbl_itemmaster">
+              <MappingFragment StoreEntitySet="tbl_itemmaster">
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="unit" ColumnName="unit" />
+                <ScalarProperty Name="item" ColumnName="item" />
+                <ScalarProperty Name="item_code" ColumnName="item_code" />
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_materialissue">
+            <EntityTypeMapping TypeName="ConstructionModel1.tbl_materialissue">
+              <MappingFragment StoreEntitySet="tbl_materialissue">
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="issue_id" ColumnName="issue_id" />
+                <ScalarProperty Name="project_name" ColumnName="project_name" />
+                <ScalarProperty Name="item_name" ColumnName="item_name" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_project">
+            <EntityTypeMapping TypeName="ConstructionModel1.tbl_project">
+              <MappingFragment StoreEntitySet="tbl_project">
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+                <ScalarProperty Name="project_name" ColumnName="project_name" />
+                <ScalarProperty Name="e_price" ColumnName="e_price" />
+                <ScalarProperty Name="e_time" ColumnName="e_time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_purchase">
+            <EntityTypeMapping TypeName="ConstructionModel1.tbl_purchase">
+              <MappingFragment StoreEntitySet="tbl_purchase">
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="purchase_id" ColumnName="purchase_id" />
+                <ScalarProperty Name="invoice" ColumnName="invoice" />
+                <ScalarProperty Name="supplier" ColumnName="supplier" />
+                <ScalarProperty Name="company" ColumnName="company" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="purchase_date" ColumnName="purchase_date" />
+                <ScalarProperty Name="purchase_rate" ColumnName="purchase_rate" />
+                <ScalarProperty Name="project_id" ColumnName="project_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_role">
+            <EntityTypeMapping TypeName="ConstructionModel1.tbl_role">
+              <MappingFragment StoreEntitySet="tbl_role">
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+                <ScalarProperty Name="role_name" ColumnName="role_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_unit">
+            <EntityTypeMapping TypeName="ConstructionModel1.tbl_unit">
+              <MappingFragment StoreEntitySet="tbl_unit">
+                <ScalarProperty Name="unit_id" ColumnName="unit_id" />
+                <ScalarProperty Name="unit" ColumnName="unit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_user">
+            <EntityTypeMapping TypeName="ConstructionModel1.tbl_user">
+              <MappingFragment StoreEntitySet="tbl_user">
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_stock">
+            <EntityTypeMapping TypeName="ConstructionModel1.tbl_stock">
+              <MappingFragment StoreEntitySet="tbl_stock">
+                <ScalarProperty Name="product_id" ColumnName="product_id" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

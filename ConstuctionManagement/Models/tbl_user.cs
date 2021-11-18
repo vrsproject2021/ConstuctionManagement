@@ -15,16 +15,15 @@ namespace ConstuctionManagement.Models
 
     public partial class tbl_user
     {
+        
         public int user_id { get; set; }
         public string username { get; set; }
         [Required(ErrorMessage = "Please Enter username!")]
         public string password { get; set; }
         [Required(ErrorMessage = "Please Enter Password!")]
         public Nullable<int> role_id { get; set; }
-    
         public virtual tbl_role tbl_role { get; set; }
 
-      
 
 
         public string LoginErrorMessage { get; set; }
