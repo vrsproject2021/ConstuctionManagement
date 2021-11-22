@@ -1,11 +1,16 @@
 ﻿
 @{
-    Layout = null;
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+@{
+    Layout = "~/Views/Shared/_Layout1.cshtml";
     if (Session["UserID"] == null)
     {
         Response.Redirect("~/Login/Index");
     }
 }
+
 
 <!DOCTYPE html>
 
